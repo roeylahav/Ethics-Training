@@ -1,0 +1,132 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutional Ethics Training - Faculty of Medicine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #presentation-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1000px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: #000;
+        }
+
+        #slide-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        #prev-btn { background: #555; color: white; }
+        #prev-btn:hover { background: #777; }
+
+        #next-btn { 
+            background: #28a745; 
+            color: white; 
+            display: none; 
+        }
+        #next-btn:hover { background: #218838; }
+
+        audio {
+            width: 300px;
+            height: 35px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    <img id="slide-image" src="assets/images/slide1.png" alt="Current Slide">
+</div>
+
+<div id="controls">
+    <button id="prev-btn" onclick="prevSlide()">Back</button>
+    <audio id="audio-player" controls></audio>
+    <button id="next-btn" onclick="nextSlide()">Next Slide</button>
+</div>
+
+<script>
+    const slides = [
+        { id: 1, img: "assets/images/slide1.png", audio: "assets/audio/audio1.mp3" },
+        { id: 2, img: "assets/images/slide2.png", audio: "assets/audio/audio2.mp3" },
+        { id: 3, img: "assets/images/slide3.png", audio: "assets/audio/audio3.mp3" },
+        { id: 4, img: "assets/images/slide4.png", audio: "assets/audio/audio4.mp3" },
+        { id: 5, img: "assets/images/slide5.png", audio: "assets/audio/audio5.mp3" }
+    ];
+
+    let currentIdx = parseInt(localStorage.getItem('savedSlideIndex')) || 0;
+    const audio = document.getElementById('audio-player');
+    const image = document.getElementById('slide-image');
+    const nextBtn = document.getElementById('next-btn');
+
+    function loadSlide(idx) {
+        if (!slides[idx]) return;
+        const slide = slides[idx];
+        image.src = slide.img;
+        audio.src = slide.audio;
+        nextBtn.style.display = 'none'; 
+        localStorage.setItem('savedSlideIndex', idx);
+    }
+
+   audio.onended = () => {
+    if (currentIdx < slides.length - 1) {
+        nextBtn.style.display = 'block'; // הכפתור מופיע רק בסיום השמע
+    }
+};
+
+    function nextSlide() {
+        if (currentIdx < slides.length - 1) {
+            currentIdx++;
+            loadSlide(currentIdx);
+            audio.play();
+        }
+    }
+
+    function prevSlide() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            loadSlide(currentIdx);
+            audio.play();
+        }
+    }
+
+    window.onload = () => {
+        loadSlide(currentIdx);
+    };
+</script>
+
+</body>
+</html>
