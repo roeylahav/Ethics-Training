@@ -24,12 +24,38 @@
             max-width: 1000px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             background: #000;
+            overflow: hidden;
         }
 
         #slide-image {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* תיבת התמלול החדשה */
+        #transcript-container {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 120px; /* גובה של כ-3 שורות */
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            overflow: hidden; /* מסתיר את הטקסט שיוצא מהטווח */
+            padding: 10px;
+            pointer-events: none; /* שלא יפריע ללחיצות */
+        }
+
+        #transcript-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 40px; /* גובה שורה קבוע לחישוב מדויק */
+            font-size: 1.4rem;
+            transition: top 0.5s linear; /* תנועה חלקה */
+            top: 0;
         }
 
         #controls {
@@ -50,25 +76,18 @@
         }
 
         #prev-btn { background: #555; color: white; }
-        #prev-btn:hover { background: #777; }
+        #next-btn { background: #28a745; color: white; display: none; }
 
-        #next-btn { 
-            background: #28a745; 
-            color: white; 
-            display: none; 
-        }
-        #next-btn:hover { background: #218838; }
-
-        audio {
-            width: 300px;
-            height: 35px;
-        }
+        audio { width: 300px; height: 35px; }
     </style>
 </head>
 <body>
 
 <div id="presentation-container">
     <img id="slide-image" src="slide1.jpg" alt="Current Slide">
+    <div id="transcript-container">
+        <div id="transcript-text"></div>
+    </div>
 </div>
 
 <div id="controls">
@@ -78,38 +97,53 @@
 </div>
 
 <script>
-    // הרשימה עודכנה לחיפוש בתיקייה הראשית ושימוש בסיומת .jpg
+    // הוסף כאן את התמלול המלא עבור כל שקף בתוך ה-text
     const slides = [
-        { id: 1, img: "slide1.jpg", audio: "audio1.mp3" },
-        { id: 2, img: "slide2.jpg", audio: "audio2.mp3" },
-        { id: 3, img: "slide3.jpg", audio: "audio3.mp3" },
-        { id: 4, img: "slide4.jpg", audio: "audio4.mp3" },
-        { id: 5, img: "slide5.jpg", audio: "audio5.mp3" },
-        { id: 6, img: "slide6.jpg", audio: "audio6.mp3" },
-        { id: 7, img: "slide7.jpg", audio: "audio7.mp3" },
-        { id: 8, img: "slide8.jpg", audio: "audio8.mp3" },
-        { id: 9, img: "slide9.jpg", audio: "audio9.mp3" },
-        { id: 10, img: "slide10.jpg", audio: "audio10.mp3" },
-        { id: 11, img: "slide11.jpg", audio: "audio11.mp3" },
-        { id: 12, img: "slide12.jpg", audio: "audio12.mp3" },
-        { id: 13, img: "slide13.jpg", audio: "audio13.mp3" },
-        { id: 14, img: "slide14.jpg", audio: "audio14.mp3" },
-        { id: 15, img: "slide15.jpg", audio: "audio15.mp3" }
+        { id: 1, img: "slide1.jpg", audio: "audio1.mp3", text:Slide 1: Introduction – The Ethics and Philosophy of Biomedical Research
+•	We open this training with one of the most complex issues in modern science: the inherent tension between medical advancement and our moral obligation toward animals. As graduate researchers, you must understand that research does not exist in a vacuum. It rests upon an unwritten "social contract," in which the public grants us the right to use sentient beings in exchange for our commitment to minimizing suffering and generating life-saving knowledge.
+•	Biologically, we operate under the assumption of "phylogenetic continuity." This means that physiological mechanisms, and specifically the central nervous system responsible for pain perception, are distinctly similar between various mammals and humans. This similarity is what allows us to draw conclusions from the model to the human patient, but it is also what imposes upon us the heaviest moral responsibility.
+•	The morality accompanying Israeli law draws from diverse sources. In Judaism, the concept of "Tza'ar Ba'alei Chayim" (the suffering of living creatures) is a Torah-mandated prohibition (De-oraita), recognizing that animals are capable of suffering and, therefore, unnecessary pain must be prevented. This perception is not unique to Judaism; in Islam, the principles of "Rahma" (mercy) and "Ihsan" (excellence/doing good) oblige every Muslim to act with compassion toward every living creature, and the Prophet Muhammad even warned against causing unnecessary suffering to animals.
+•	In the Christian tradition as well, the concept of "Stewardship" positions man as the guardian of creation rather than an owner with unlimited rights of exploitation. The convergence of these three monotheistic religions within the Israeli sphere creates a broad ethical consensus: it is permissible to use animals for the benefit of humankind, but we are duty-bound to be "custodians" of their welfare.
+•	Beyond the monotheistic religions familiar to our region, it is important to recognize the contribution of Eastern philosophies to the global ethical fabric of animal welfare. In Hinduism, the principle of 'Ahimsa'—non-violence—is a central pillar. According to this belief, all living beings carry within them a divine spark (Atman); therefore, harming an animal is perceived as a disruption of the cosmic order and as causing suffering to oneself. Similarly, Buddhism emphasizes the value of compassion (Karuna) toward all "sentient beings," recognizing that all creatures strive to avoid suffering. In Sikhism as well, there is an emphasis on the fact that the Creator resides in all of creation; thus, it is the believer's duty to act with respect and kindness toward every living thing. These perspectives strengthen the international scientific consensus: the use of animals in research is not a self-evident right, but a moral privilege requiring constant justification and an approach of humility and mercy.
+•	From a research perspective, we must remember that a stressed animal is not a good model. The HPA system (Hypothalamic-Pituitary-Adrenal axis) is activated during distress, leading to the secretion of glucocorticoids. These affect the immune system, gene expression, and behavioral responses. Therefore, maintaining animal welfare is a pure scientific interest for clearing "background noise" from the results.
+•	This training will focus on Israeli law, yet it is important to remember that the law is only the minimum threshold. As graduate students, you are required to strive for the highest ethical standard. You are the ones on the "front line"—in the laboratory, the operating room, and the animal house—and your professional decisions are what will determine the animal's quality of life.
+•	Today we will discuss the 3Rs principles, which have evolved from a philosophical recommendation into a rigid regulatory requirement. The concepts of Replacement, Reduction, and Refinement are the compass that should guide you in writing every protocol and performing every procedure.
+•	It is important to emphasize that the law in Israel is considered one of the most advanced in the world, precisely because of the integration between representatives of science and representatives of animal welfare organizations. This dialogue, though sometimes difficult, ensures that research continues to progress while maintaining its public legitimacy.
+•	A classic example of the importance of ethics is the development of insulin or biological cancer treatments. Without animal models, we would not be here today. Yet, alongside this success, we must always ask: Could we have done it with less suffering? This is the question that will accompany us throughout the entire presentation.
+•	To conclude the introduction, I invite you to adopt an approach of "Critical Thinking." Do not take the experiment for granted. A critical examination of the need for the animal is the first step of a responsible and professional scientist.
+         { id: 2, img: "slide2.jpg", audio: "audio2.mp3", text: "הרגולציה היא תגובה לאירועים היסטוריים. קוד נירנברג קבע חובת ניסוי בבעלי חיים לפני בני אדם. עד 1994 ישראל פעלה לפי נהלים פנימיים, אך חוק צער בעלי חיים יצר מסגרת משפטית מחייבת." },
+        // ... המשך להוסיף כאן את הטקסט לכל 15 השקפים
     ];
 
     let currentIdx = parseInt(localStorage.getItem('savedSlideIndex')) || 0;
     const audio = document.getElementById('audio-player');
     const image = document.getElementById('slide-image');
     const nextBtn = document.getElementById('next-btn');
+    const transcriptText = document.getElementById('transcript-text');
 
     function loadSlide(idx) {
         if (!slides[idx]) return;
         const slide = slides[idx];
         image.src = slide.img;
         audio.src = slide.audio;
+        transcriptText.innerText = slide.text; // טעינת הטקסט
+        transcriptText.style.top = "0px"; // איפוס גלילה
         nextBtn.style.display = 'none'; 
         localStorage.setItem('savedSlideIndex', idx);
     }
+
+    // פונקציית הגלילה האוטומטית
+    audio.ontimeupdate = () => {
+        if (audio.duration) {
+            const progress = audio.currentTime / audio.duration;
+            const textHeight = transcriptText.scrollHeight;
+            const containerHeight = 120; // גובה התיבה
+            
+            // חישוב כמה הטקסט צריך לעלות למעלה
+            const scrollDistance = (textHeight - containerHeight) * progress;
+            transcriptText.style.top = `-${scrollDistance}px`;
+        }
+    };
 
     audio.onended = () => {
         if (currentIdx < slides.length - 1) {
@@ -133,9 +167,7 @@
         }
     }
 
-    window.onload = () => {
-        loadSlide(currentIdx);
-    };
+    window.onload = () => loadSlide(currentIdx);
 </script>
 
 </body>
