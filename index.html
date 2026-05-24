@@ -29,7 +29,7 @@
             width: 100%;
             background: #000;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            line-height: 0; /* מונע רווח לבן מתחת לתמונה */
+            line-height: 0;
         }
 
         #slide-image {
@@ -38,7 +38,6 @@
             display: block;
         }
 
-        /* תיבת התמלול - כעת מתחת לתמונה */
         #transcript-container {
             width: 100%;
             height: 120px; 
@@ -83,19 +82,9 @@
         }
 
         #prev-btn { background: #555; color: white; }
-        #prev-btn:hover { background: #777; }
+        #next-btn { background: #28a745; color: white; display: none; }
 
-        #next-btn { 
-            background: #28a745; 
-            color: white; 
-            display: none; 
-        }
-        #next-btn:hover { background: #218838; }
-
-        audio {
-            width: 350px;
-            height: 40px;
-        }
+        audio { width: 350px; height: 40px; }
     </style>
 </head>
 <body>
@@ -124,7 +113,7 @@
             audio: "audio1.mp3", 
             text: `Slide 1: Introduction – The Ethics and Philosophy of Biomedical Research. We open this training with one of the most complex issues in modern science: the inherent tension between medical advancement and our moral obligation toward animals. As graduate researchers, you must understand that research does not exist in a vacuum. It rests upon an unwritten "social contract," in which the public grants us the right to use sentient beings in exchange for our commitment to minimizing suffering and generating life-saving knowledge. Biologically, we operate under the assumption of "phylogenetic continuity." This means that physiological mechanisms, and specifically the central nervous system responsible for pain perception, are distinctly similar between various mammals and humans. This similarity is what allows us to draw conclusions from the model to the human patient, but it is also what imposes upon us the heaviest moral responsibility. The morality accompanying Israeli law draws from diverse sources. In Judaism, the concept of "Tza'ar Ba'alei Chayim" (the suffering of living creatures) is a Torah-mandated prohibition (De-oraita), recognizing that animals are capable of suffering and, therefore, unnecessary pain must be prevented. This perception is not unique to Judaism; in Islam, the principles of "Rahma" (mercy) and "Ihsan" (excellence/doing good) oblige every Muslim to act with compassion toward every living creature, and the Prophet Muhammad even warned against causing unnecessary suffering to animals. In the Christian tradition as well, the concept of "Stewardship" positions man as the guardian of creation rather than an owner with unlimited rights of exploitation. The convergence of these three monotheistic religions within the Israeli sphere creates a broad ethical consensus: it is permissible to use animals for the benefit of humankind, but we are duty-bound to be "custodians" of their welfare. Beyond the monotheistic religions familiar to our region, it is important to recognize the contribution of Eastern philosophies to the global ethical fabric of animal welfare. In Hinduism, the principle of 'Ahimsa'—non-violence—is a central pillar. According to this belief, all living beings carry within them a divine spark (Atman); therefore, harming an animal is perceived as a disruption of the cosmic order and as causing suffering to oneself. Similarly, Buddhism emphasizes the value of compassion (Karuna) toward all "sentient beings," recognizing that all creatures strive to avoid suffering. In Sikhism as well, there is an emphasis on the fact that the Creator resides in all of creation; thus, it is the believer's duty to act with respect and kindness toward every living thing. These perspectives strengthen the international scientific consensus: the use of animals in research is not a self-evident right, but a moral privilege requiring constant justification and an approach of humility and mercy. From a research perspective, we must remember that a stressed animal is not a good model. The HPA system (Hypothalamic-Pituitary-Adrenal axis) is activated during distress, leading to the secretion of glucocorticoids. These affect the immune system, gene expression, and behavioral responses. Therefore, maintaining animal welfare is a pure scientific interest for clearing "background noise" from the results. This training will focus on Israeli law, yet it is important to remember that the law is only the minimum threshold. As graduate students, you are required to strive for the highest ethical standard. You are the ones on the "front line"—in the laboratory, the operating room, and the animal house—and your professional decisions are what will determine the animal's quality of life. Today we will discuss the 3Rs principles, which have evolved from a philosophical recommendation into a rigid regulatory requirement. The concepts of Replacement, Reduction, and Refinement are the compass that should guide you in writing every protocol and performing every procedure. It is important to emphasize that the law in Israel is considered one of the most advanced in the world, precisely because of the integration between representatives of science and representatives of animal welfare organizations. This dialogue, though sometimes difficult, ensures that research continues to progress while maintaining its public legitimacy. A classic example of the importance of ethics is the development of insulin or biological cancer treatments. Without animal models, we would not be here today. Yet, alongside this success, we must always ask: Could we have done it with less suffering? This is the question that will accompany us throughout the entire presentation. To conclude the introduction, I invite you to adopt an approach of "Critical Thinking." Do not take the experiment for granted. A critical examination of the need for the animal is the first step of a responsible and professional scientist.`
         },
-        { id: 2, img: "slide2.jpg", audio: "audio2.mp3", text: "הרגולציה היא תגובה לאירועים היסטוריים. קוד נירנברג קבע חובת ניסוי בבעלי חיים לפני בני אדם..." },
+        { id: 2, img: "slide2.jpg", audio: "audio2.mp3", text: "הרגולציה היא תגובה לאירועים היסטוריים..." },
         { id: 3, img: "slide3.jpg", audio: "audio3.mp3", text: "" },
         { id: 4, img: "slide4.jpg", audio: "audio4.mp3", text: "" },
         { id: 5, img: "slide5.jpg", audio: "audio5.mp3", text: "" },
@@ -158,16 +147,24 @@
     }
 
     audio.ontimeupdate = () => {
-        if (audio.duration) {
-            const progress = audio.currentTime / audio.duration;
+        const delaySeconds = 7; // מספר השניות להמתנה בתחילת כל שקף
+        
+        if (audio.duration && audio.currentTime > delaySeconds) {
+            // מחשבים את ההתקדמות רק מנקודת ה-7 שניות ועד הסוף
+            const adjustedCurrentTime = audio.currentTime - delaySeconds;
+            const adjustedDuration = audio.duration - delaySeconds;
+            
+            const progress = adjustedCurrentTime / adjustedDuration;
             const textHeight = transcriptText.scrollHeight;
             const containerHeight = 120; 
             
             if (textHeight > containerHeight) {
-                // גלילה חלקה מבוססת התקדמות השמע
                 const scrollDistance = (textHeight - containerHeight) * progress;
                 transcriptText.style.top = `-${scrollDistance}px`;
             }
+        } else {
+            // אם אנחנו בתוך 7 השניות הראשונות, הטקסט נשאר למעלה
+            transcriptText.style.top = "0px";
         }
     };
 
