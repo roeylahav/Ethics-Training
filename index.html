@@ -1,3 +1,10 @@
+התמונה האחרונה ששלחת מסבירה בדיוק למה הלומדה לא מציגה את התמונות והאודיו: כל הקבצים הועלו לתיקייה הראשית, בעוד שהקוד מחפש אותם בתוך תיקיות משנה בשם assets/images ו-assets/audio.
+
+במקום שתצטרך לסדר את התיקיות ב-GitHub (מה שיכול להיות מסורבל), עדכנתי עבורך את קוד ה-index.html כך שהוא יחפש את הקבצים בדיוק איפה שהם נמצאים עכשיו – באותה רמה של קובץ ה-HTML.
+
+בנוסף, עדכנתי את רשימת השקפים כך שתכלול את כל 15 השקפים שמופיעים בצילום המסך שלך, ושמתי לב שהתמונות שלך הן בסיומת .jpg (ולא .png), אז תיקנתי גם את זה כדי שהן יוצגו כראוי.
+
+קוד index.html המעודכן:
 HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +76,7 @@ HTML
 <body>
 
 <div id="presentation-container">
-    <img id="slide-image" src="assets/images/slide1.png" alt="Current Slide">
+    <img id="slide-image" src="slide1.jpg" alt="Current Slide">
 </div>
 
 <div id="controls">
@@ -79,12 +86,23 @@ HTML
 </div>
 
 <script>
+    // הרשימה עודכנה ל-15 שקפים עם סיומת jpg כפי שמופיע ב-GitHub שלך
     const slides = [
-        { id: 1, img: "assets/images/slide1.png", audio: "assets/audio/audio1.mp3" },
-        { id: 2, img: "assets/images/slide2.png", audio: "assets/audio/audio2.mp3" },
-        { id: 3, img: "assets/images/slide3.png", audio: "assets/audio/audio3.mp3" },
-        { id: 4, img: "assets/images/slide4.png", audio: "assets/audio/audio4.mp3" },
-        { id: 5, img: "assets/images/slide5.png", audio: "assets/audio/audio5.mp3" }
+        { id: 1, img: "slide1.jpg", audio: "audio1.mp3" },
+        { id: 2, img: "slide2.jpg", audio: "audio2.mp3" },
+        { id: 3, img: "slide3.jpg", audio: "audio3.mp3" },
+        { id: 4, img: "slide4.jpg", audio: "audio4.mp3" },
+        { id: 5, img: "slide5.jpg", audio: "audio5.mp3" },
+        { id: 6, img: "slide6.jpg", audio: "audio6.mp3" },
+        { id: 7, img: "slide7.jpg", audio: "audio7.mp3" },
+        { id: 8, img: "slide8.jpg", audio: "audio8.mp3" },
+        { id: 9, img: "slide9.jpg", audio: "audio9.mp3" },
+        { id: 10, img: "slide10.jpg", audio: "audio10.mp3" },
+        { id: 11, img: "slide11.jpg", audio: "audio11.mp3" },
+        { id: 12, img: "slide12.jpg", audio: "audio12.mp3" },
+        { id: 13, img: "slide13.jpg", audio: "audio13.mp3" },
+        { id: 14, img: "slide14.jpg", audio: "audio14.mp3" },
+        { id: 15, img: "slide15.jpg", audio: "audio15.mp3" }
     ];
 
     let currentIdx = parseInt(localStorage.getItem('savedSlideIndex')) || 0;
@@ -101,11 +119,12 @@ HTML
         localStorage.setItem('savedSlideIndex', idx);
     }
 
-   audio.onended = () => {
-    if (currentIdx < slides.length - 1) {
-        nextBtn.style.display = 'block'; // הכפתור מופיע רק בסיום השמע
-    }
-};
+    // חסימת המעבר: כפתור ה-Next יופיע רק בסיום השמע
+    audio.onended = () => {
+        if (currentIdx < slides.length - 1) {
+            nextBtn.style.display = 'block';
+        }
+    };
 
     function nextSlide() {
         if (currentIdx < slides.length - 1) {
